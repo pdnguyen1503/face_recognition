@@ -22,13 +22,13 @@ def getProfile():
     	i+=1
     return personArray
 personAll = getProfile()
-print("All user in database: \n"+ personAll)
+print("All user in database: \n")
+print( personAll)
 cam = cv2.VideoCapture(0)
 cam.set(3, 720)
 cam.set(4, 720)
 minW = 0.1*cam.get(3)
 minH = 0.1*cam.get(4)
-
 while True:
     ret, image =cam.read()
     gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
@@ -38,20 +38,20 @@ while True:
         minNeighbors = 5,
         minSize = (int(minW), int(minH)),
         )
-
     for(x, y, w, h) in faces:
         cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,255), 2)
         id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
+
         if (confidence < 70):
+            faceok +=1
             nameUser = personAll[id]
             
         else :
             nameUser = "Unknow"
-        cv2.putText(image, str(nameUser), (x,y), fontface, 1, (255,255,0), 2)
+        cv2.putText(image, str(nameUser), (x,y), fontface, 1, (0,255,0), 2)
     cv2.imshow('Face Recognition',image) 
     if cv2.waitKey(1)==ord('q'):
         break;
-
 print("\n Exit face recognition")
 cam.release()
 cv2.destroyAllWindows()
